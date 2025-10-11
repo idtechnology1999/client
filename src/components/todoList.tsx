@@ -1,5 +1,5 @@
 import axios from "axios";
-import React from "react";
+
 import { useState, useEffect } from "react";
 const api_url_base = import.meta.env.VITE_API_BASE_URL;
 
