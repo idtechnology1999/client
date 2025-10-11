@@ -12,18 +12,27 @@ export default function MyTodo() {
   const [message, setmessage] = useState("");
   const [GetList, SetGetList] = useState<lists[]>([]);
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
+// fetch all tasks
+function allfunction() {
+  axios
+    .get(`${api_url}/api/GetList`)
+    .then((getresponse) => {
+      const data = getresponse.data;
 
-  // fetch all tasks
-  function allfunction() {
-    axios
-      .get(`${api_url}/api/GetList`)
-      .then((getresponse) => {
-        SetGetList(getresponse.data.List || []);
-      })
-      .catch((err) => {
-        console.error("GetList error:", err);
-      });
-  }
+      // Ensure GetList is always an array
+      const list = Array.isArray(data.List) 
+        ? data.List        // if response is { List: [...] }
+        : Array.isArray(data) 
+        ? data             // if response is just [...]
+        : [];              // fallback to empty array
+
+      SetGetList(list);
+    })
+    .catch((err) => {
+      console.error("GetList error:", err);
+      SetGetList([]); // fallback to empty array
+    });
+}
 
   useEffect(() => {
     allfunction();
